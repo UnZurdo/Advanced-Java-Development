@@ -1,4 +1,4 @@
-public class BisectionMethod extends UnivariateFunctionRootFindingMethod<Double> {
+public class BisectionMethod implements UnivariateFunctionRootFindingMethod<Double> {
     public static final double EPSILON = 1.0E-6;
     private static final int MAX_ITERATIONS = 50;
     private Double root = 0.0;

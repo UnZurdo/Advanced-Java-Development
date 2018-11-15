@@ -14,45 +14,62 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class UnivariateFunctionRootFindingMethodTest {
 
     private UnivariateFunctionRootFindingMethod<Double> univariateMethods;
-    private BisectionMethod BM;
-    private FalsePositionMethod FPM;
+    private BisectionMethod BM, BM2;
+    private FalsePositionMethod FPM, FPM2;
 
     @BeforeEach
     public void initSolver() {
         UnivariateFunction<Double> f = x -> x - 2.5 * Math.sin(x) * Math.sin(x);
-
+        UnivariateFunction<Double> f2 = x -> 3 * Math.pow(x, 2) * Math.cos(x) - 1.0 / 2.0;
         BM = new BisectionMethod(f);
         FPM = new FalsePositionMethod(f);
-        //univariateMethods = new UnivariateFunctionRootFindingMethod<Double>();
+        BM2 = new BisectionMethod(f2);
+        FPM2 = new FalsePositionMethod(f2);
     }
 
-    @Test
-    void solve() {
+    // Tests for the FalsePositionMethod implementation of UnivariateFunctionRootFindingMethod
+    @ParameterizedTest
+    @CsvSource({ "1.0, 4.0, 2.0228952451909037", "0.5, 3.0, 2.0228952407765113"})
+    void solveFMP(double x0, double x1, double solution) {
+        double result = FPM.solve(x0, x1);
+        assertEquals(result, solution);
+        System.out.printf("-> Test solveFMP passed with values %.2f, %.2f and solution %f\n", x0, x1, solution);
 
     }
 
     @ParameterizedTest
     @CsvSource({ "-1.0, -3.0", "0.0, 0.5"})
-    public void solveRejectsInvalidArguments(double x0, double x1) {
+    public void solveRejectsInvalidArgumentsFPM(double x0, double x1) {
         Executable testCode = () -> FPM.solve(x0, x1);
         assertThrows(IllegalArgumentException.class, testCode, "Invalid Arguments");
-        System.out.printf("-> Test solveRejectsInvalidArguments passed with values %.2f, %.2f \n", x0, x1);
+        System.out.printf("-> Test solveRejectsInvalidArgumentsFPM passed with values %.2f, %.2f \n", x0, x1);
 
     }
     @ParameterizedTest
     @CsvSource({ "1.0, 3.0", "0.25, 0.5", "-2.5, 5.5"})
-    public void solveAcceptsLegalArguments(double x0, double x1) {
+    public void solveAcceptsLegalArgumentsFPM(double x0, double x1) {
         UnivariateFunction<Double> f = x -> x - 2.5 * Math.sin(x) * Math.sin(x);
-
         Executable testCode = () -> FPM.solve(x0, x1);
-        Executable testConstructor = () ->   new FalsePositionMethod(f) ;
-
         assertDoesNotThrow(testCode);
-        System.out.printf("-> Test solveAcceptsLegalArguments passed with values %.2f, %.2f \n", x0, x1);
+        System.out.printf("-> Test solveAcceptsLegalArgumentsFPM passed with values %.2f, %.2f \n", x0, x1);
     }
 
-    @Test
-    void convergenceTime() {
+    @ParameterizedTest
+    @CsvSource({ "-1.0, -3.0"})
+    void convergenceTime(double x0, double x1) {
+        Executable testCode = () -> FPM.convergenceTime(x0, x1);
+        assertThrows(IllegalArgumentException.class, testCode, "Invalid Arguments");
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "1.0, 3.0"})
+    void convergenceTimeOut(double x0, double x1) {
+        final int TIMEOUT = 2000;
+        long exTime =  FPM.convergenceTime(x0, x1);
+        // Calculation should last less than TIMEOUTms
+        assertTrue(exTime < TIMEOUT);
+        System.out.printf("-> Test convergenceTimeOut passed with values %.2f, %.2f in %d ms, timeOut at %d ms\n", x0, x1, exTime, TIMEOUT);
+
     }
 
 
@@ -71,4 +88,11 @@ class UnivariateFunctionRootFindingMethodTest {
         System.out.printf("-> Test reliableFPM passed with values %.2f, %.2f \n", x0, x1);
 
     }
+
+    // Tests for the BisectionMethod implementation of UnivariateFunctionRootFindingMethod
+
+
+
+
+
 }

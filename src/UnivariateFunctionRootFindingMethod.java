@@ -1,23 +1,25 @@
 /**
- * @param <T>
+ * Interface to solve univariate functions
+ * @param <T>, generic variable that supports numeric values
  */
-public abstract class UnivariateFunctionRootFindingMethod<T extends Number> {
+public interface UnivariateFunctionRootFindingMethod<T extends Number> {
     /**
-     *
-     * @param x0
-     * @param x1
-     * @return
-     * @throws IllegalArgumentException
+     * Root-finding function for univariate functions
+     * @param x0 numeric value (integer or decimal), lower bound of the bracket
+     * @param x1 numeric value (integer or decimal) upper bound of the bracket
+     * @return numeric value with the result of calculating the root
+     * @throws IllegalArgumentException if the bracket (x0, x1) in the given univariate function does not contain a root
      */
-    public abstract T solve(T x0, T x1) throws IllegalArgumentException;
+    T solve(T x0, T x1) throws IllegalArgumentException;
 
     /**
      * Informs the user of the time spent doing the calculations
-     * @param x0, has to be a valid input
-     * @param x1,
-     * @throws IllegalArgumentException if
+     * @param x0 numeric value (integer or decimal), lower bound of the bracket
+     * @param x1 numeric value (integer or decimal) upper bound of the bracket
+     * @return numeric long value, time spent computing the root
+     * @throws IllegalArgumentException if the bracket (x0, x1) does not contain a root
      */
-    public void convergenceTime(T x0, T x1) throws IllegalArgumentException{
+    default long convergenceTime(T x0, T x1) throws IllegalArgumentException{
         // Start time
         long startTime = System.nanoTime();
 
@@ -26,28 +28,25 @@ public abstract class UnivariateFunctionRootFindingMethod<T extends Number> {
         long endTime = System.nanoTime();
         long diff = (endTime - startTime);  //divide by 1000000 to get milliseconds.
 
-        System.out.printf("Convergence time: %d ms \n", diff / 1000);
+        //System.out.printf("Convergence time: %d ms \n", diff / 1000);
+        return diff / 1000;
     }
 
+
     /**
-     *
-     * @param x0
-     * @param x1
+     * @param x0 numeric value (integer or decimal), lower bound of the bracket
+     * @param x1 numeric value (integer or decimal) upper bound of the bracket
+     * @return true if the function can be solved (no IllegalArgumentException exception), otherwise return false
      */
-    public boolean reliability(T x0, T x1) throws  IllegalArgumentException{
+    default boolean reliability(T x0, T x1) {
         try {
             solve(x0, x1);
-            //System.out.println("The method is guaranteed to find the root");
             return true;
 
-
         } catch (IllegalArgumentException e){
-            //System.out.println("The method is NOT guaranteed to find the root \n -- IllegalArgumentException found --\n");
-            //throw new IllegalArgumentException();
             return false;
 
         }
-
     }
 
 
