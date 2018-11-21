@@ -1,13 +1,15 @@
-public class FalsePositionMethod implements UnivariateFunctionRootFindingMethod<Double> {
+public class FalsePositionMethod extends UnivariateFunctionRootFindingMethod<Double> {
     public static final double EPSILON = 1.0E-6;
     private static final int MAX_ITERATIONS = 10;
     private Double root = 0.0;
 
-    private UnivariateFunction<Double> function;
-
     public FalsePositionMethod(UnivariateFunction<Double> f) {
-        this.function = f;
+        super(f);
     }
+    public FalsePositionMethod() {
+
+    }
+
 
     @Override
     public Double solve(Double x0, Double x1) throws IllegalArgumentException {

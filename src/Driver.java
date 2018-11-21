@@ -17,6 +17,9 @@ public class Driver {
             System.out.printf("FalsePositiveMethod is reliable for values %.2f, %.2f\n", LOWER, HIGHER);
             Double root_f1 = solverFP.solve(LOWER, HIGHER);
             System.out.println("root solverFP  at " + root_f1);
+            Double accuracy = solverFP.getAccuracy();
+            System.out.println("Accuracy solverFP  at " + accuracy);
+
             long diff = solverFP.convergenceTime(LOWER, HIGHER);
             System.out.printf("Convergence time: %d ms \n", diff);
 

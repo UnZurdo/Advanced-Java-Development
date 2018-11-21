@@ -1,16 +1,14 @@
-public class BisectionMethod implements UnivariateFunctionRootFindingMethod<Double> {
+public class BisectionMethod extends UnivariateFunctionRootFindingMethod<Double> {
     public static final double EPSILON = 1.0E-6;
     private static final int MAX_ITERATIONS = 50;
     private Double root = 0.0;
 
-    private UnivariateFunction<Double> function;
-
     public BisectionMethod(UnivariateFunction<Double> f) {
-        this.function = f;
+        super(f);
     }
 
     @Override
-    public Double solve(Double x0, Double x1) throws IllegalArgumentException {
+    public Double solve(Double x0, Double x1){
         int numberOfIterations = 0;
         Double m, y_m, y_x0;
 
