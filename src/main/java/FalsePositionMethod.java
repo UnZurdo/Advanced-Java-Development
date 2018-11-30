@@ -1,3 +1,5 @@
+package main.java;
+
 public class FalsePositionMethod extends UnivariateFunctionRootFindingMethod<Double> {
     public static final double EPSILON = 1.0E-6;
     private static final int MAX_ITERATIONS = 10;
@@ -6,13 +8,11 @@ public class FalsePositionMethod extends UnivariateFunctionRootFindingMethod<Dou
     public FalsePositionMethod(UnivariateFunction<Double> f) {
         super(f);
     }
-    public FalsePositionMethod() {
-
-    }
-
 
     @Override
-    public Double solve(Double x0, Double x1) throws IllegalArgumentException {
+    public Double solve(Double x0, Double x1) throws IllegalArgumentException, NullPointerException {
+
+        if ( this.function.apply(x0) == null ) throw new NullPointerException("No univariate function is specified");
 
         int numberOfIterations = 0;
 
@@ -36,6 +36,9 @@ public class FalsePositionMethod extends UnivariateFunctionRootFindingMethod<Dou
             }
         }
         while (rootNotFound && (numberOfIterations < MAX_ITERATIONS));
+
+        // In case it can't converge to the root, means that the bracket contains a root
+        if (rootNotFound && numberOfIterations == MAX_ITERATIONS) throw new IllegalArgumentException("Failed to converge to a root, invalid arguments");
 
         return root;
     }

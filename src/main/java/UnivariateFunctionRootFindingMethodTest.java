@@ -1,4 +1,5 @@
-import org.junit.jupiter.api.Test;
+package main.java;
+
 import org.junit.jupiter.api.BeforeEach;
 
 import org.junit.jupiter.api.function.Executable;
@@ -9,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-// Does BisectionMethod throw an exception ???
+// Does main.java.BisectionMethod throw an exception ???
 
 class UnivariateFunctionRootFindingMethodTest {
 
@@ -19,15 +20,15 @@ class UnivariateFunctionRootFindingMethodTest {
 
     @BeforeEach
     public void initSolver() {
-        UnivariateFunction<Double> f = x -> x - 2.5 * Math.sin(x) * Math.sin(x);
-        UnivariateFunction<Double> f2 = x -> 3 * Math.pow(x, 2) * Math.cos(x) - 1.0 / 2.0;
+        UnivariateFunction<Double> f2 = x -> x - 2.5 * Math.sin(x) * Math.sin(x);
+        UnivariateFunction<Double> f = x -> 3 * Math.pow(x, 2) * Math.cos(x) - 1.0 / 2.0;
         BM = new BisectionMethod(f);
         FPM = new FalsePositionMethod(f);
         BM2 = new BisectionMethod(f2);
         FPM2 = new FalsePositionMethod(f2);
     }
 
-    // Tests for the FalsePositionMethod implementation of UnivariateFunctionRootFindingMethod
+    // Tests for the main.java.FalsePositionMethod implementation of main.java.UnivariateFunctionRootFindingMethod
     @ParameterizedTest
     @CsvSource({ "1.0, 4.0, 2.0228952451909037", "0.5, 3.0, 2.0228952407765113"})
     void solveFMP(double x0, double x1, double solution) {
@@ -61,17 +62,6 @@ class UnivariateFunctionRootFindingMethodTest {
         assertThrows(IllegalArgumentException.class, testCode, "Invalid Arguments");
     }
 
-    @ParameterizedTest
-    @CsvSource({ "1.0, 3.0"})
-    void convergenceTimeOut(double x0, double x1) {
-        final int TIMEOUT = 2000;
-        long exTime =  FPM.convergenceTime(x0, x1);
-        // Calculation should last less than TIMEOUTms
-        assertTrue(exTime < TIMEOUT);
-        System.out.printf("-> Test convergenceTimeOut passed with values %.2f, %.2f in %d ms, timeOut at %d ms\n", x0, x1, exTime, TIMEOUT);
-
-    }
-
 
     @ParameterizedTest
     @CsvSource({ "-1.0, -3.0", "0.0, 0.5"})
@@ -83,13 +73,13 @@ class UnivariateFunctionRootFindingMethodTest {
 
     @ParameterizedTest
     @CsvSource({ "1.0, 3.0", "0.25, 0.5", "-2.5, 5.5"})
-    public void rReliableFPM(double x0, double x1) {
+    public void reliableFPM(double x0, double x1) {
         assertTrue(FPM.reliability(x0, x1));
         System.out.printf("-> Test reliableFPM passed with values %.2f, %.2f \n", x0, x1);
 
     }
 
-    // Tests for the BisectionMethod implementation of UnivariateFunctionRootFindingMethod
+    // Tests for the main.java.BisectionMethod implementation of main.java.UnivariateFunctionRootFindingMethod
 
 
 

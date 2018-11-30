@@ -1,8 +1,10 @@
+package main.java;
+
 public class Driver {
     public static void main(String [] args) {
 
-        final double LOWER = 0.5;
-        final double HIGHER = 3.0;
+        final double LOWER = 1.0;
+        final double HIGHER = 4.0;
         UnivariateFunction<Double> f = x -> x - 2.5 * Math.sin(x) * Math.sin(x);
         //UnivariateFunction<Double> f = x -> 3 * Math.pow(x, 2) * Math.cos(x) - 1.0 / 2.0;
 
@@ -39,7 +41,7 @@ public class Driver {
 
         }
         else {
-            System.out.printf("BisectionMethod is NOT reliable for values %.2f, %.2f \n", LOWER, HIGHER);
+            System.out.printf("main.java.BisectionMethod is NOT reliable for values %.2f, %.2f \n", LOWER, HIGHER);
         }
 
     }

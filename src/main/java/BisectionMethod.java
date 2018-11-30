@@ -1,3 +1,5 @@
+package main.java;
+
 public class BisectionMethod extends UnivariateFunctionRootFindingMethod<Double> {
     public static final double EPSILON = 1.0E-6;
     private static final int MAX_ITERATIONS = 50;
@@ -8,7 +10,10 @@ public class BisectionMethod extends UnivariateFunctionRootFindingMethod<Double>
     }
 
     @Override
-    public Double solve(Double x0, Double x1){
+    public Double solve(Double x0, Double x1) throws IllegalArgumentException, NullPointerException {
+        // In case it can't converge to the root, means that the bracket contains a root
+        if ( this.function.apply(x0) == null ) throw new NullPointerException("No univariate function is specified");
+
         int numberOfIterations = 0;
         Double m, y_m, y_x0;
 
@@ -29,6 +34,10 @@ public class BisectionMethod extends UnivariateFunctionRootFindingMethod<Double>
         }
 
         rootNotFound = (x1 - x0) > EPSILON;
+
+        // In case it can't converge to the root, means that the bracket contains a root
+        if ( rootNotFound ) throw new IllegalArgumentException("Failed to converge to a root, invalid arguments");
+
         this.root = (x0 + x1) / 2.0;
 
         return this.root;
